@@ -46,8 +46,9 @@ build the Haskell parts
 If you only want to run this locally, or work on the UI (which is written in
 plain JavaScript in folder `webui/`), you can also run
 
-    wget http://incredible.pm/logic.js -O logic.js
-    wget http://incredible.pm/sessions.js -O sessions.js
+    wget https://incredible.pm/logic.js -O logic.js
+    wget https://incredible.pm/logics.js -O logics.js
+    wget https://incredible.pm/sessions.js -O sessions.js
 
 The JavaScript part of the project uses a few external libraries. To obtain
 these, run `./install-jslib.sh`.
