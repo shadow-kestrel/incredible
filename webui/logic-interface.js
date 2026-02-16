@@ -129,6 +129,8 @@ function processGraph() {
 	} else {
 	    countColor = 'wheat';
 	}
+      // Note whether this is proven with optimal block count now
+      graph.set('perf', blockCount <= task["min-blocks"]);
     }
 
     // Collect errors

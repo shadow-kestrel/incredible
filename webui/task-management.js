@@ -1,7 +1,10 @@
 var task_desc; // A string describing the current task
 
+var star_proto = $('<object class=\"star\" type=\"image/svg+xml\" data=\"star.svg\"></object>')
+
 var tasks_saved = {};
 var tasks_solved = {};
+var tasks_perfected = {};
 var custom_tasks = {};
 var custom_rules = {};
 var session_passwords = [];
@@ -22,6 +25,7 @@ function saveTask() {
   if (task_desc) {
     tasks_saved[task_desc] = _.omit(graph.toJSON(), 'loading');
     tasks_solved[task_desc] = graph.get('qed');
+    tasks_perfected[task_desc] = graph.get('perf')
     saveSession();
   }
 }
@@ -31,6 +35,7 @@ function saveSession() {
     localStorage["incredible-session"] = JSON.stringify({
       saved: tasks_saved,
       solved: tasks_solved,
+      perfected: tasks_perfected,
       custom: custom_tasks,
       rules: custom_rules,
       passwords: session_passwords
@@ -43,6 +48,7 @@ function loadSession() {
     var stored = JSON.parse(localStorage["incredible-session"]);
     tasks_saved = stored.saved || {};
     tasks_solved = stored.solved || {};
+    tasks_perfected = stored.perfected || {};
     custom_tasks = stored.custom || {};
     custom_rules = stored.rules || {};
     session_passwords = stored.passwords || [];
@@ -85,6 +91,7 @@ function taskToHTML(task, onRemove) {
   $.each(task.conclusions || [], function (i, el) {
     d2.append($("<li>").text(incredibleFormatTerm(el)));
   });
+  var star = star_proto.clone();
   if (!!onRemove) {
     var tool = $('<div class="task-tools"><svg xmlns="http://www.w3.org/2000/svg" width="32px" height="32px"></div>');
     V(tool.find("svg").get(0))
@@ -93,7 +100,7 @@ function taskToHTML(task, onRemove) {
       .on('click', onRemove)
       .appendTo(container);
   }
-  return container.append(d1, $("<hr/>"), d2); 
+  return container.append(d1, $("<hr/>"), d2, star); 
 }
 
 $(function () {
@@ -269,10 +276,15 @@ function updateTaskSelectionInfo() {
       $(t).toggleClass('solved', qed);
     });
   });
+  $.each(tasks_perfected, function (desc, perf) {
+    $.each(lookupmap[desc]||[], function (i,t) {
+      $(t).children('.star').toggleClass('perf', perf)
+    });
+  });
 }
 
 function showTaskSelection() {
-  updateTaskSelectionInfo();
+  updateTaskSelectionInfo()
   $("#taskbottombar").hide("slide", {direction: "down"}, 100, function () {
     $("#taskdialog").show("slide", {direction:"down"}, 800, function () {
       $("#taskdialog").focus();
