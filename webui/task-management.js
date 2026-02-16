@@ -1,6 +1,6 @@
 var task_desc; // A string describing the current task
 
-var star_proto = $('<object class=\"star\" type=\"image/svg+xml\" data=\"star.svg\"></object>')
+var star_proto = $('<object class=\"star\" type=\"image/svg+xml\" data=\"webui/star.svg\"></object>')
 
 var tasks_saved = {};
 var tasks_solved = {};
