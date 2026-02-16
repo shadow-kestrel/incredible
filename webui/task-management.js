@@ -1,6 +1,6 @@
 var task_desc; // A string describing the current task
 
-var star_proto = $('<object class=\"star\" type=\"image/svg+xml\" data=\"webui/star.svg\"></object>')
+var star_proto = $('<object class=\"star\" type=\"image/svg+xml\" data=\"webui/star.svg\"></object>');
 
 var tasks_saved = {};
 var tasks_solved = {};
@@ -25,7 +25,7 @@ function saveTask() {
   if (task_desc) {
     tasks_saved[task_desc] = _.omit(graph.toJSON(), 'loading');
     tasks_solved[task_desc] = graph.get('qed');
-    tasks_perfected[task_desc] = graph.get('perf')
+    tasks_perfected[task_desc] = graph.get('perf');
     saveSession();
   }
 }
@@ -278,13 +278,13 @@ function updateTaskSelectionInfo() {
   });
   $.each(tasks_perfected, function (desc, perf) {
     $.each(lookupmap[desc]||[], function (i,t) {
-      $(t).children('.star').toggleClass('perf', perf)
+      $(t).children('.star').toggleClass('perf', perf);
     });
   });
 }
 
 function showTaskSelection() {
-  updateTaskSelectionInfo()
+  updateTaskSelectionInfo();
   $("#taskbottombar").hide("slide", {direction: "down"}, 100, function () {
     $("#taskdialog").show("slide", {direction:"down"}, 800, function () {
       $("#taskdialog").focus();
